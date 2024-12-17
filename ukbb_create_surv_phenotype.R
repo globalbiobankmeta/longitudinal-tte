@@ -8,9 +8,9 @@ p <- add_argument(p, "--phecode", help = "")
 args <- parse_args(p)
 
 # Read the latest UKBB data
-phecode_data <- fread("/humgen/atgu1/fin/wzhou/projects/survival_analysis/realdata/UKBB/pheno/UKB_Phecode_v1.2b1_ICD_Mapping.txt", header=T, colClasses=rep("character", 6), data.table=F)
-diagcode_data <- fread("/humgen/atgu1/fin/wzhou/projects/survival_analysis/realdata/UKBB/pheno_08282024/input/ukb31063.hesin_diag.20231204_phecode_age_collapse.txt", header=T, colClasses=c("character", "character", "numeric", "numeric", "character", "character", "numeric"), data.table=F)
-death_data <- fread("/humgen/atgu1/fin/wzhou/projects/survival_analysis/realdata/UKBB/pheno_08282024/input/Death_pheno.20231204_allpops.txt", header=T, data.table=F, select=c("s", "age_death_or_lastvisit"))
+phecode_data <- fread("UKB_Phecode_v1.2b1_ICD_Mapping.txt", header=T, colClasses=rep("character", 6), data.table=F)
+diagcode_data <- fread("ukb.hesin_diag.20231204_phecode_age_collapse.txt", header=T, colClasses=c("character", "character", "numeric", "numeric", "character", "character", "numeric"), data.table=F)
+death_data <- fread("Death_pheno.20231204_allpops.txt", header=T, data.table=F, select=c("s", "age_death_or_lastvisit"))
 
 # Add death or last visit age to diagnose data
 death_unique <- death_data[!duplicated(death_data),]
@@ -48,7 +48,7 @@ colnames(data_age)[which(colnames(data_age) == "status")] <- paste0("X", args$ph
 # Got a data frame of all samples for a phecode, case samples have event age and death age; control samples have death age
 
 # Read covariates, keep gPC 1-20, population, related or no, sex
-covdata <- fread("zcat /humgen/atgu1/fin/wzhou/projects/survival_analysis/realdata/UKBB/pheno/final_samples.txt.bgz", header=T, data.table=F, colClasses=c(rep("character",6), rep("numeric",20), rep("character",2), rep("numeric",5)))
+covdata <- fread("zcat final_samples.txt.bgz", header=T, data.table=F, colClasses=c(rep("character",6), rep("numeric",20), rep("character",2), rep("numeric",5)))
 covdata <- covdata[,c("s",paste0("PC",1:20), "pop", "related", "sex")]
 phenodata <- covdata %>% left_join(data_age, by = c("s"="eid"))
 
@@ -61,7 +61,7 @@ if(phecode_data$sex[which(phecode_data$phecode == args$phecode)] == "males"){
 
 
 # Read sample year of birth
-yobdata <- fread("/humgen/atgu1/fin/wzhou/projects/survival_analysis/realdata/UKBB/pheno_08282024/input/eid_birthdate.txt.onlyyear", header=T, sep="\t", colClasses=c("character", "numeric"), data.table=F)
+yobdata <- fread("eid_birthdate.txt.onlyyear", header=T, sep="\t", colClasses=c("character", "numeric"), data.table=F)
 
 colnames(yobdata) <- c("eid","birthyear")
 
