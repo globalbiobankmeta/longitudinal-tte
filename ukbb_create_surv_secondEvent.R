@@ -16,7 +16,7 @@ args <- parse_args(p)
 firstdata <- fread(args$firstEventFile,  header=T, data.table=F)
 seconddata <- fread(args$secondEventFile, header=T,  data.table=F)
 # Extract samples with case status of t0, i.e. "censors"
-phenodatanew <- firstdata[which(firstdata$event == 1), ]
+phenodatanew = firstdata %>% filter(event == 1)
 
 if(("event" %in% colnames(seconddata))){
   seconddata = seconddata[which(seconddata$event == 1), ]
@@ -43,6 +43,15 @@ phenodatanew2 <- phenodatanew2[which(phenodatanew2$secondTime >0), ]
 # }
 
 # Write sample count by population and T2E status to a file
-write.table(table(phenodatanew2$pop, phenodatanew2$secondEvent), paste0("/humgen/atgu1/fin/zwen/gbmi_progress/ukbb/pheno_", args$firstEvent, "_to_", args$secondEvent, "_N.txt"), col.names = T, row.names = T, quote = F, sep = "\t")
+write.table(table(phenodatanew2$pop, phenodatanew2$secondEvent), paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_NbyPop.txt"), col.names = T, row.names = T, quote = F, sep = "\t")
+write.table(table(phenodatanew2$pop, phenodatanew2$secondEvent, phenodatanew2$sex), paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_NbyPopSex.txt"), col.names = T, row.names = T, quote = F, sep = "\t")
+
 # Write final phenotype list of T2E
-write.table(phenodatanew2, paste0("/humgen/atgu1/fin/zwen/gbmi_progress/ukbb/pheno_", args$firstEvent, "_to_", args$secondEvent, ".txt"), quote=F, col.names=T, row.names=F, sep = "\t")
+write.table(phenodatanew2, paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, ".txt"), quote=F, col.names=T, row.names=F, sep = "\t")
+
+for (pop in c("AFR", "AMR", "CSA", "EAS", "EUR", "MID")){
+    phenodatanew2_pop = phenodatanew2 %>% filter(pop == pop)
+    write.table(phenodatanew2_pop, paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_", pop, "_ALL.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
+    write.table(phenodatanew2_pop %>% filter(sex == 0), paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_", pop, "_F.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
+    write.table(phenodatanew2_pop %>% filter(sex == 1), paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_", pop, "_M.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
+}
