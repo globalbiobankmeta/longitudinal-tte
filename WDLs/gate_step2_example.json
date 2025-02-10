@@ -1,0 +1,6 @@
+{
+    "gate_step2.bgenbase": "gs://your-bucket/bgen_data.chr",
+    "gate_step2.samplefile": "gs://your-bucket/bgen_data.sample",
+    "gate_step2.modelfile": "gs://your-bucket/hypertension_to_MI_eur.rda",
+    "gate_step2.varianceratiofile": "gs://your-bucket/hypertension_to_MI_eur.varianceRatio.txt"
+}

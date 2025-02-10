@@ -1,0 +1,15 @@
+{
+    "gate_step1.sparsegrmfile": "gs://your-bucket/aou_eur_relatednessCutoff_0.05_2000_randomMarkersUsed.sparseGRM.mtx",
+    "gate_step1.sparsegrmsamplefile": "gs://your-bucket/aou_eur_relatednessCutoff_0.05_2000_randomMarkersUsed.sparseGRM.mtx.sampleIDs.txt",
+    "gate_step1.bedfile": "gs://your-bucket/random_2k_aou_v7_eur_maf0.01.bed",
+    "gate_step1.bimfile": "gs://your-bucket/random_2k_aou_v7_eur_maf0.01.bim",
+    "gate_step1.famfile": "gs://your-bucket/random_2k_aou_v7_eur_maf0.01.fam",
+    "gate_step1.phenofile": "gs://your-bucket/hypertension_to_MI.txt",
+    "gate_step1.covariates": "PC1,PC2,PC3,PC4,PC5,PC6,PC7,PC8,PC9,PC10,sex,birth_year,age_at_first_event",
+    "gate_step1.pheno": "hypertension_to_MI",
+    "gate_step1.cpu": 4,
+    "gate_step1.mem": 15,
+    "gate_step1.traceCVcutoff": 0.0025,
+    "gate_step1.ratioCVcutoff": 0.001,
+    "gate_step1.pcgforUhatforSurvAnalysis": "TRUE"
+}

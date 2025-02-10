@@ -1,0 +1,1 @@
+These WDL and json files were initially created to run via Cromwell on the All of Us researcher workbench, but they should be largely generalizable to other biobanks.
