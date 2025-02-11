@@ -18,7 +18,7 @@ rule all:
             chr=[str(c) for c in range(1, 23)] + ["X"]  # Include chrX
         ),
         expand(
-            "/saige_out_onset/{t0}_{population}_{sex}_{chr}.index",
+            "saige_out_onset/{t0}_{population}_{sex}_{chr}.index",
             t0=config["onset"]["t0"],
             population=['EUR', 'AFR', 'CSA', 'EAS', 'AMR', 'MID'],
             sex=['F', 'M', 'ALL'],

@@ -1,6 +1,51 @@
-# longitudinal-tte
-This repo provides example scripts to curate Time-to-event phenotypes for GWAS on disease onset and progression based on phecodes. 
-- To create endpoint phenotype file of UKBB, `Rscript ukbb_create_surv_phenotype.R --phecode $1`, where `$1` is phecode.
-- To create T2E phenotype file of UKBB, `Rscript ukbb_create_surv_secondEvent.R --firstEventFile $1 --firstEvent $2 --secondEventFile $3 --secondEvent $4`, where `$1` and `$3` are paths to output files from the previous script, and `$2` and `$4` are phecodes.
-- See `ukbb.smk` and `WDLs/` for example command to run SAIGE GATE. Please note both onset and progression GWAS analysis is to be run for stratified population and sex (F/M/ALL). And only progression GWAS with N_event>50 is to be performed. Please adjust the code for your biobank. 
-- For the flag "eventTimeBinSize" when running SAIGE step1, the width to group event occurrence could be chosen differently based on the nature of your time-to-event data. If the unit of event time is year, you could choose eventTimeBinSize=1; if the unit of event time is month, eventTimeBinSize=1/12 could be a preferred choice.
+# GBMI Time-to-Event GWAS
+This repository provides example scripts for curating **time-to-event phenotypes** and running **GWAS on disease onset and progression** using biobank data. The examples use UK Biobank (UKBB) data, but the approach can be adapted to other biobanks.
+
+## 1. Disease Onset Phenotype Curation 
+To generate **onset phenotype files**, use the following command:
+```
+Rscript ukbb_create_surv_phenotype.R --phecode ${phecode_of_interest}
+```
+### Example Output
+See `example_ukbb_pheno_files/pheno_411.2_EUR_ALL.txt.gz` for an example onset phenotype file.
+
+## 2. Disease Progression Phenotype Curation
+To generate **progression phenotype files**, use the following command:
+```
+Rscript ukbb_create_surv_secondEvent.R \
+    --firstEventFile ${T0_phenotype_file} \
+    --firstEvent ${T0_phecode} \
+    --secondEventFile ${T1_phenotype_file} \
+    --secondEvent ${T1_phecode}
+```
+### Example Output
+See `example_ukbb_pheno_files/pheno_411.2_to_428.2_EUR_ALL.txt.gz` for an example progression phenotype file.
+
+## 3. Running Time-to-Event GWAS
+To perform time-to-event (TTE) GWAS, refer to:
+- `ukbb.smk` for example commands to run SAIGE GATE, including:
+  - Step 1 and Step 2 for both **onset and progression GWAS**
+  - Population and sex-stratified analyses `(F/M/ALL)`
+- `WDLs/` for example commands to run SAIGE GATE on AllofUs platform.
+- Please note only  GWAS with `N_event>=50` is to be performed. 
+### Key Parameters & Recommendations
+- **Choosing** `--eventTimeBinSize`: 
+  - If the unit of event time is **year**, you could choose `--eventTimeBinSize=1` 
+  - If the unit of event time is **month**, `--eventTimeBinSize=1/12` could be a preferred choice.
+- **Recommended covariates:**
+  - **Onset GWAS:** `gPC + sex + birthyear` + any biobank-specific covariates
+  - **Progression GWAS:** `gPC + sex + birthyear +`**`age_of_T0_disease_diagnosis`** + any biobank-specific covariates
+  - Sex stratified analysis: Please remove `sex` from covariates 
+- **SAIGE GATE Input Columns:**
+  - **Onset GWAS:**
+    ```
+    --phenoCol=event --eventTimeCol=age
+    ```
+    - `event`: Phecode status (case/control)
+    - `age`: Diagnosis age for cases, or death/last visit age for controls.
+  - **Progression GWAS:**
+    ```
+    --phenoCol=secondEvent --eventTimeCol=secondTime
+    ```
+    - `secondEvent`: Development of T1 status
+    - `secondTime`: Time from T0 to T1 for cases, or death/last visit time from T0 for controls. 
