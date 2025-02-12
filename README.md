@@ -7,7 +7,7 @@ To generate **onset phenotype files**, use the following command:
 Rscript ukbb_create_surv_phenotype.R --phecode ${phecode_of_interest}
 ```
 ### Example Output
-See `example_ukbb_pheno_files/pheno_411.2_EUR_ALL.txt.gz` for an example onset phenotype file.
+See `example_ukbb_pheno_files/pheno_411.2_EUR_ALL.txt.gz` for an example onset phenotype file. The Rscript will write population- and sex-stratified phenotype files. A file listing case and control sample sizes for each population will also be generated.
 
 ## 2. Disease Progression Phenotype Curation
 To generate **progression phenotype files**, use the following command:
@@ -19,7 +19,7 @@ Rscript ukbb_create_surv_secondEvent.R \
     --secondEvent ${T1_phecode}
 ```
 ### Example Output
-See `example_ukbb_pheno_files/pheno_411.2_to_428.2_EUR_ALL.txt.gz` for an example progression phenotype file.
+See `example_ukbb_pheno_files/pheno_411.2_to_428.2_EUR_ALL.txt.gz` for an example progression phenotype file. The Rscript will write population- and sex-stratified phenotype files. A file listing case and control sample sizes for each population will also be generated.
 
 ## 3. Running Time-to-Event GWAS
 To perform time-to-event (TTE) GWAS, refer to:
@@ -28,6 +28,7 @@ To perform time-to-event (TTE) GWAS, refer to:
   - Population and sex-stratified analyses `(F/M/ALL)`
 - `WDLs/` for example commands to run SAIGE GATE on AllofUs platform.
 - Please note only  GWAS with `N_event>=50` is to be performed. 
+- Please note phecode "185" is male_only, so no female analysis should be run.
 ### Key Parameters & Recommendations
 - **Choosing** `--eventTimeBinSize`: 
   - If the unit of event time is **year**, you could choose `--eventTimeBinSize=1` 
