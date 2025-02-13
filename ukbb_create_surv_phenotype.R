@@ -75,10 +75,10 @@ write.table(table(phenodata2$pop, phenodata2$event), paste0("pheno_", args$pheco
 write.table(table(phenodata2$pop, phenodata2$event, phenodata2$sex), paste0("pheno_", args$phecode, "_NbyPopSex.txt"), col.names = T, row.names = T, quote = F, sep = "\t")
 
 # Write final phenotype list of endpoint phecode
-for (pop in c("AFR", "AMR", "CSA", "EAS", "EUR", "MID")){
-    phenodata2_pop = phenodata2 %>% filter(pop == pop)
-    write.table(phenodata2_pop, paste0("pheno_", args$phecode, "_", pop, "_ALL.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
-    write.table(phenodata2_pop %>% filter(sex == 0), paste0("pheno_", args$phecode, "_", pop, "_F.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
-    write.table(phenodata2_pop %>% filter(sex == 1), paste0("pheno_", args$phecode, "_", pop, "_M.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
+for (POP in c("AFR", "AMR", "CSA", "EAS", "EUR", "MID")){
+    phenodata2_pop = phenodata2 %>% filter(pop == POP)
+    write.table(phenodata2_pop, paste0("pheno_", args$phecode, "_", POP, "_ALL.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
+    write.table(phenodata2_pop %>% filter(sex == 0), paste0("pheno_", args$phecode, "_", POP, "_F.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
+    write.table(phenodata2_pop %>% filter(sex == 1), paste0("pheno_", args$phecode, "_", POP, "_M.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
 }
 write.table(phenodata2, paste0("pheno_", args$phecode, ".txt"), quote=F, col.names=T, row.names=F, sep="\t")

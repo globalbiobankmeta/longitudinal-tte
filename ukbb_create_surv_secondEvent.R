@@ -49,9 +49,9 @@ write.table(table(phenodatanew2$pop, phenodatanew2$secondEvent, phenodatanew2$se
 # Write final phenotype list of T2E
 write.table(phenodatanew2, paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, ".txt"), quote=F, col.names=T, row.names=F, sep = "\t")
 
-for (pop in c("AFR", "AMR", "CSA", "EAS", "EUR", "MID")){
-    phenodatanew2_pop = phenodatanew2 %>% filter(pop == pop)
-    write.table(phenodatanew2_pop, paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_", pop, "_ALL.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
-    write.table(phenodatanew2_pop %>% filter(sex == 0), paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_", pop, "_F.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
-    write.table(phenodatanew2_pop %>% filter(sex == 1), paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_", pop, "_M.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
+for (POP in c("AFR", "AMR", "CSA", "EAS", "EUR", "MID")){
+    phenodatanew2_pop = phenodatanew2 %>% filter(pop == POP)
+    write.table(phenodatanew2_pop, paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_", POP, "_ALL.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
+    write.table(phenodatanew2_pop %>% filter(sex == 0), paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_", POP, "_F.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
+    write.table(phenodatanew2_pop %>% filter(sex == 1), paste0("pheno_", args$firstEvent, "_to_", args$secondEvent, "_", POP, "_M.txt"), col.names = T, row.names = F, quote = F, sep = "\t")
 }
