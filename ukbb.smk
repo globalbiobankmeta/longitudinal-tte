@@ -21,6 +21,8 @@ Please note only GWAS with N_case>=50 is to be run. Please adjust to your bioban
 2. onset_saige_step2
 - The second step of SAIGE is to perform the association test using the fitted null model from step 1. This is done separately for each chromosome.
 - The input is the .rda file and .varianceRatio.txt file from step 1, as well as the genotype data in BGEN format. VCF or plink format is also supported. See SAIGE documentation for details.
+- Specify --is_imputed_data=TRUE and --minInfo=0.3 if genotype is imputed.
+- Option to split into chunks with --rangestoIncludeFile.
 
 3. progress_saige_step1
 - The input phenotype file should contain the columns "secondEvent" and "secondTime" for the progress survival analysis. "secondEvent" is the T0 to T1 status, and "secondTime" is the progression time for cases, or current/death age from T0 diagnosis for controls.
@@ -28,6 +30,8 @@ Please note only GWAS with N_case>=50 is to be run. Please adjust to your bioban
 
 4. progress_saige_step2
 - The input is the .rda file and .varianceRatio.txt file from step 1, as well as the genotype data in BGEN format. VCF or plink format is also supported. See SAIGE documentation for details.
+- Specify --is_imputed_data=TRUE and --minInfo=0.3 if genotype is imputed.
+- Option to split into chunks with --rangestoIncludeFile.
  
 """
 
@@ -115,6 +119,8 @@ rule onset_saige_step2:
             --LOCO=FALSE \
             --AlleleOrder=ref-first \
             --SAIGEOutputFile=saige_out_onset/{wildcards.t0}_{wildcards.population}_{wildcards.sex}_{wildcards.chr} \
+            --is_imputed_data=TRUE \
+            --minInfo=0.3 \
             > {log} 2>&1
         """
 
@@ -183,6 +189,8 @@ rule progress_saige_step2:
             --LOCO=FALSE \
             --AlleleOrder=ref-first \
             --SAIGEOutputFile=saige_out_progress/{wildcards.t0}_to_{wildcards.t1}_{wildcards.population}_{wildcards.sex}_{wildcards.chr} \
+            --is_imputed_data=TRUE \
+            --minInfo=0.3 \
             > {log} 2>&1
         """
 

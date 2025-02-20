@@ -50,3 +50,8 @@ To perform time-to-event (TTE) GWAS, refer to:
     ```
     - `secondEvent`: Development of T1 status
     - `secondTime`: Time from T0 to T1 for cases, or death/last visit time from T0 for controls. 
+- **Imputation quality:**
+  - If genotype is imputed, please use `--is_imputed_data=TRUE --minInfo=0.3` when running SAIGE-GATE step2, so that output file has an `imputationInfo` column and variants with quality score<0.3 will be filtered out. 
+  - If genotype is not imputed, `--is_imputed_data=FALSE` by default, and `MissingRate` column will be in the output file.
+- **Parallelization:**
+  - To speed up SAIGE-GATE step2, split chromosomes into chunks with `--rangestoIncludeFile`, and merge chunk output files together.
