@@ -28,7 +28,7 @@ To perform time-to-event (TTE) GWAS, refer to:
   - Population and sex-stratified analyses `(F/M/ALL)`
 - `WDLs/` for example commands to run SAIGE GATE on AllofUs platform.
 - Please note only  GWAS with `N_event>=50` is to be performed. 
-- Please note phecode "185" is male_only, so no female analysis should be run.
+- Please note phecode "185" is male only, so no `F` or `ALL` analysis should be run.
 ### Key Parameters & Recommendations
 - **Choosing** `--eventTimeBinSize`: 
   - If the unit of event time is **year**, you could choose `--eventTimeBinSize=1` 
@@ -36,7 +36,7 @@ To perform time-to-event (TTE) GWAS, refer to:
 - **Recommended covariates:**
   - **Onset GWAS:** `gPC + sex + birthyear` + any biobank-specific covariates
   - **Progression GWAS:** `gPC + sex + birthyear +`**`age_of_T0_disease_diagnosis`** + any biobank-specific covariates
-  - Sex stratified analysis: Please remove `sex` from covariates 
+  - Sex-stratified analysis: Please remove `sex` from covariates 
 - **SAIGE GATE Input Columns:**
   - **Onset GWAS:**
     ```
@@ -55,3 +55,7 @@ To perform time-to-event (TTE) GWAS, refer to:
   - If genotype is not imputed, `--is_imputed_data=FALSE` by default, and `MissingRate` column will be in the output file.
 - **Parallelization:**
   - To speed up SAIGE-GATE step2, split chromosomes into chunks with `--rangestoIncludeFile`, and merge chunk output files together.
+  - `--nThreads` option is available for SAIGE 1.4.2 step 2.
+- **Chromosome X:**
+  - For `ALL` analysis, only autosomal chromosomes should be included in the analysis.
+  - For sex-stratified `F/M` analysis, chrX should be added to the analysis.

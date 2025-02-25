@@ -39,14 +39,14 @@ rule all:
     input:
         # Zip t0 and t1 together first, then expand population, sex, and chr independently
         expand(
-            "saige_out_progress/{t0_t1[0]}_to_{t0_t1[1]}_{population}_{sex}_{chr}.index",
+            "saige_out_progress/{t0_t1[0]}_to_{t0_t1[1]}_{population}_{sex}_{chr}.txt.index",
             t0_t1=list(zip(config["progress"]["t0"], config["progress"]["t1"])),
             population=['EUR', 'AFR', 'CSA', 'EAS', 'AMR', 'MID'],
             sex=['F', 'M', 'ALL'],
             chr=[str(c) for c in range(1, 23)] + ["X"]  # Include chrX
         ),
         expand(
-            "saige_out_onset/{t0}_{population}_{sex}_{chr}.index",
+            "saige_out_onset/{t0}_{population}_{sex}_{chr}.txt.index",
             t0=config["onset"]["t0"],
             population=['EUR', 'AFR', 'CSA', 'EAS', 'AMR', 'MID'],
             sex=['F', 'M', 'ALL'],
@@ -100,13 +100,10 @@ rule onset_saige_step2:
         varratio="saige_out_onset/{t0}_{population}_{sex}.varianceRatio.txt",
         sample="sample.txt",
     output:
-        "saige_out_onset/{t0}_{population}_{sex}_{chr}",
-        "saige_out_onset/{t0}_{population}_{sex}_{chr}.index",
+        "saige_out_onset/{t0}_{population}_{sex}_{chr}.txt",
+        "saige_out_onset/{t0}_{population}_{sex}_{chr}.txt.index",
     log:
-        "log/cluster_logs/ukbb.saige2.{t0}_{population}_{sex}_{chr}.out",
-    resources:
-        mem_gb=10,
-        time_min=480,
+        "log/cluster_logs/ukbb.saige2.{t0}_{population}_{sex}_{chr}.txt.out",
     shell:
         """
         Rscript SAIGE/extdata/step2_SPAtests.R \
@@ -118,7 +115,7 @@ rule onset_saige_step2:
             --minMAC=20 \
             --LOCO=FALSE \
             --AlleleOrder=ref-first \
-            --SAIGEOutputFile=saige_out_onset/{wildcards.t0}_{wildcards.population}_{wildcards.sex}_{wildcards.chr} \
+            --SAIGEOutputFile={output[0]} \
             --is_imputed_data=TRUE \
             --minInfo=0.3 \
             > {log} 2>&1
@@ -170,13 +167,10 @@ rule progress_saige_step2:
         varratio="saige_out_progress/{t0}_to_{t1}_{population}_{sex}.varianceRatio.txt",
         sample="sample.txt",
     output:
-        "saige_out_progress/{t0}_to_{t1}_{population}_{sex}_{chr}",
-        "saige_out_progress/{t0}_to_{t1}_{population}_{sex}_{chr}.index",
+        "saige_out_progress/{t0}_to_{t1}_{population}_{sex}_{chr}.txt",
+        "saige_out_progress/{t0}_to_{t1}_{population}_{sex}_{chr}.txt.index",
     log:
-        "log/cluster_logs/ukbb.saige2.{t0}_{t1}_{population}_{sex}_{chr}.out",
-    resources:
-        mem_gb=10,
-        time_min=480,
+        "log/cluster_logs/ukbb.saige2.{t0}_{t1}_{population}_{sex}_{chr}.txt.out",
     shell:
         """
         Rscript SAIGE/extdata/step2_SPAtests.R \
@@ -188,7 +182,7 @@ rule progress_saige_step2:
             --minMAC=20 \
             --LOCO=FALSE \
             --AlleleOrder=ref-first \
-            --SAIGEOutputFile=saige_out_progress/{wildcards.t0}_to_{wildcards.t1}_{wildcards.population}_{wildcards.sex}_{wildcards.chr} \
+            --SAIGEOutputFile={output[0]} \
             --is_imputed_data=TRUE \
             --minInfo=0.3 \
             > {log} 2>&1
