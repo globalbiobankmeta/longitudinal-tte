@@ -1,1 +1,1 @@
-These WDL and json files were initially created to run via Cromwell on the All of Us researcher workbench, but they should be largely generalizable to other biobanks.
+These WDL and json files were initially created to run SAIGE v1.4.0 via Cromwell on the All of Us researcher workbench, but they should be largely generalizable to other biobanks with minor changes.
