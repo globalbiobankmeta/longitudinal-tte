@@ -55,7 +55,7 @@ To perform time-to-event (TTE) GWAS, refer to:
   - If genotype is not imputed, `--is_imputed_data=FALSE` by default, and `MissingRate` column will be in the output file.
 - **Parallelization:**
   - To speed up SAIGE-GATE step2, split chromosomes into chunks with `--rangestoIncludeFile`, and merge chunk output files together.
-  - `--nThreads` option is available for SAIGE 1.4.2 step 2.
+  - `--nThreads` option is available for SAIGE 1.4.4 step 2.
 - **Chromosome X:**
   - For `ALL` analysis, only autosomal chromosomes should be included in the analysis.
   - For sex-stratified `F/M` analysis, chrX should be added to the analysis.
