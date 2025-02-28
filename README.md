@@ -54,8 +54,7 @@ To perform time-to-event (TTE) GWAS, refer to:
   - If genotype is imputed, please use `--is_imputed_data=TRUE --minInfo=0.3` when running SAIGE-GATE step2, so that output file has an `imputationInfo` column and variants with quality score<0.3 will be filtered out. 
   - If genotype is not imputed, `--is_imputed_data=FALSE` by default, and `MissingRate` column will be in the output file.
 - **Parallelization:**
-  - To speed up SAIGE-GATE step2, split chromosomes into chunks with `--rangestoIncludeFile`, and merge chunk output files together.
-  - `--nThreads` option is available for SAIGE 1.4.4 step 2.
+  -To speed up SAIGE-GATE step 2, split chromosomes into chunks using `--rangestoIncludeFile` and then merge the output files from each chunk. Ensure that the chromosome format in the range file matches the format in the genotype file (e.g., both should use "chr22" or both should use "22").
 - **Chromosome X:**
   - For `ALL` analysis, only autosomal chromosomes should be included in the analysis.
   - For sex-stratified `F/M` analysis, chrX should be added to the analysis.
