@@ -1,0 +1,40 @@
+Folder created March 4 2026 to create Phecode-ICD mappings from PheWAS resources,
+bypassing the Google Sheets mappings previously provided.
+
+*** Descriptions of R files ***
+
+figureThingsOut.R
+---
+Compare PheWAS mappings to Google Sheets mappings. With this comparison, I 
+noticed that phecodes included children phecodes that map to their parents.
+
+mapPhecodesToICDs.R +
+helpers.R +
+customMapPhecodesToExclusions.R
+---
+Read in previously provided list of mappings only to get phecodes we want for
+the study. Use PheWAS package to find all child phecodes mapping to them and
+associated exclusion phecodes. Then map inclusion and exclusion phecodes to 
+ICD codes
+
+*** .csv files ***
+
+Time-to-event_Phenotype_sample_sizes - _Corrected_ Phecode_ICD_map.csv
+---
+Downloaded on Feb 27, 2026 from the corrected Google Sheet that was shared with 
+GBMI members. One phecode per row.
+
+phecode_definitions1.2.csv
+Phecode_map_v1_2_icd9_icd10cm.csv
+---
+Downloaded on March 3, 2026 from https://phewascatalog.org/phewas/#phe12.
+
+phewas1_2_mappingPlus.csv
+---
+Output from mapPhecodesToICDs.R
+"Plus" refers to the fact that we manually added a few ICD codes (listed below) 
+to the case inclusion ICDs for heart failure and COPD from the Google sheets mapping. 
+Without these ICD codes, sample sizes decrease by over 1000 per phenotype.
+
+428.2/Heart failure NOS: I50.0, I50.9
+496.21/COPD: J44.8, J44.9
