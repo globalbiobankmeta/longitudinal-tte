@@ -3,16 +3,16 @@ library(dplyr)
 
 # phecode definitions and ICD mappings
 # downloaded from https://phewascatalog.org/phewas/#phe12 on March 3, 2026
-phecodeDefinitions <- fread("/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/pheWASResources/phecode_definitions1.2.csv",
+phecodeDefinitions <- fread("~/pheWASResources/phecode_definitions1.2.csv",
                             colClasses = c(rep("character",4), rep("integer",3), "character"))
-pheIcdMap <- fread("/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/pheWASResources/Phecode_map_v1_2_icd9_icd10cm.csv",
+pheIcdMap <- fread("~/pheWASResources/Phecode_map_v1_2_icd9_icd10cm.csv",
                    colClasses = c("character", "integer", rep("character",4)))
 
 # Note: some ICDs map to more than one Phecode
 uniqueN(pheIcdMap$ICD) - nrow(pheIcdMap)
 
 # List of study phenotypes
-correctedMappings <- fread("/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/Time-to-event_Phenotype_sample_sizes - _Corrected_ Phecode_ICD_map.csv",
+correctedMappings <- fread("~/Time-to-event_Phenotype_sample_sizes - _Corrected_ Phecode_ICD_map.csv",
                            colClasses = rep("character", 5))
 studyPhecodes <- correctedMappings$Phecode
 
@@ -31,7 +31,7 @@ table(pheIcdMap$Flag)
 # Why is it so much smaller than the descriptions tab in the Google sheet?
 # is it because we've only listed case inclusion criteria? Answer: no
 ### phecode-ICD description list (1 ICD per row)
-comprehensivePhecodeMappings <- fread("/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/Time-to-event_Phenotype_sample_sizes - Phecode_ICD_description.csv",
+comprehensivePhecodeMappings <- fread("~/Time-to-event_Phenotype_sample_sizes - Phecode_ICD_description.csv",
                                       colClasses = rep("character",7))
 sum(comprehensivePhecodeMappings$ICD_category == "ICD_case_include") # 3011
 

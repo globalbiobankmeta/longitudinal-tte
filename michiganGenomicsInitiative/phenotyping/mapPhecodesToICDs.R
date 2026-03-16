@@ -1,10 +1,16 @@
 library(data.table)
 library(PheWAS)
-source("/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/pheWASResources/helpers.R")
-source("/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/pheWASResources/customMapPhecodesToExclusions.R")
+source("~/pheWASResources/helpers.R")
+source("~/pheWASResources/customMapPhecodesToExclusions.R")
 # Use list provided on Google Sheets just to get the list of study phecodes
-googleMappings <- fread("/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/Time-to-event_Phenotype_sample_sizes - _Corrected_ Phecode_ICD_map.csv",
+googleMappings <- fread("~/Time-to-event_Phenotype_sample_sizes - _Corrected_ Phecode_ICD_map.csv",
                         colClasses = rep("character",5))
+# Someone was interested in obstructive sleep apnea
+googleMappings <- rbind(
+  googleMappings,
+  as.list(c("327.32", "Obstructive sleep apnea", "Both", "", "")),
+  fill = TRUE
+)
 
 # Find all child phecodes that map to the study phecode (rollup = 1)
 # Uses PheWAS::phecode_rollup_map
@@ -15,7 +21,7 @@ phewasMappings <- getChildPhecodes(phenotypes = googleMappings$Phecode)
 phewasMappings <- getExclusionPhecodes(phewasMappings)
 
 # Get ICDs for all case inclusions
-phewas12Map <- fread("/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/pheWASResources/Phecode_map_v1_2_icd9_icd10cm.csv",
+phewas12Map <- fread("~/pheWASResources/Phecode_map_v1_2_icd9_icd10cm.csv",
                      colClasses = c("character", "integer", rep("character",4)))
 phewasMappings <- getCaseInclusionIcds(phewasMappings, phewas12Map)
 
@@ -74,7 +80,7 @@ newMapping <- data.table("Phecode" = phewasMappings$parentPhecode,
 # Write the new mapping table to a csv file
 # This is the version without the ICDs manually added to heart failure and COPD 
 # case inclusion lists
-# fwrite(newMapping, "/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/pheWASResources/phewas1_2_mapping.csv",)
+# fwrite(newMapping, "~/pheWASResources/phewas1_2_mapping.csv",)
 
 # This version has more ICDs in heart failure and COPD case inclusion
-fwrite(newMapping, "/nfs/turbo/precision-health/DataDirect/HUM00126227_Genetics_associated_with_CVD/pheWASResources/phewas1_2_mappingPlus.csv",)
+fwrite(newMapping, "~/pheWASResources/phewas1_2_mappingPlus.csv",)
